@@ -8,9 +8,9 @@
     lo que permite una interacción fluida entre el cliente y el servidor, así como 
     la creación de salas que facilitan la conversación privada entre los usuarios.
 
-Los datos generados por el sistema se almacenan en una base de datos no relacional, 
-en este caso, MongoDB. Esta elección se realizó para garantizar que el sistema pueda 
-manejar grandes volúmenes de datos de manera eficiente.
+    Los datos generados por el sistema se almacenan en una base de datos no relacional, 
+    en este caso, MongoDB. Esta elección se realizó para garantizar que el sistema pueda 
+    manejar grandes volúmenes de datos de manera eficiente.
 
 ## Autor:
     Jorge Antonio Gálvez Pino
@@ -26,5 +26,5 @@ manejar grandes volúmenes de datos de manera eficiente.
 
     Para la instalacion de las librerias mecesaria para ejecutaer el programa
     debe ejecutar el siguiente comando
-    ´´´bash
+        ```bash
         "pip install -r .\requirements.txt"
