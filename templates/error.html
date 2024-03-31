@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Estilos adicionales */
+        body {
+            background-color: #f8f9fa;
+        }
+        .error-container {
+            text-align: center;
+            margin-top: 100px;
+        }
+        .error-code {
+            font-size: 144px;
+            color: #848a8d;
+        }
+        .error-message {
+            font-size: 36px;
+            color: #343a40;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="error-container">
+                    <div class="error-code">ERROR</div>
+                    <div class="error-message">Página no encontrada</div>
+                    <p>Lo sentimos, la página que estás buscando no se encuentra.</p>
+                    <a href="{{ url_for('logout') }}" class="btn btn-secondary">Ir a la página principal</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

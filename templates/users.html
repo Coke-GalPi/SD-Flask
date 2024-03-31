@@ -1,0 +1,110 @@
+{% extends "layouts/base_user.html" %}
+
+{% block title %}User | {{ data.username }}{% endblock %}
+
+{% block content %}
+
+    {% if data %}
+        <div class="alert alert-light mt-3 ms-5 me-5ms-5 me-5" role="alert">
+            <h3 class="text-center">Bienvenido, {{ data.username }}!</h3>
+        </div>
+    {% endif %}
+    <div class="container">
+        <div class="row">
+            <div class="col-4">
+                <div class="card text-center">
+                    <div class="card-header">
+                        <h3>Contactos</h3>
+                    </div>
+                    <div class="card-body text-start">
+                        <table class="table table-bordered border-secondary">
+                            <thead class="text-center">
+                                <tr>
+                                    <th scope="col"><strong>Username</strong></th>
+                                    <th scope="col"><strong>Borrar</strong></th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-center">
+                                {% for contact_username, contact_data in data.contactos.items() %}
+                                    <tr>
+                                        <th>
+                                            <a href="/chat/{{ contact_data['idUserAdd'] }}" class="btn">{{ contact_username }}</a>
+                                        </th>
+                                        <th>
+                                            <form class="d-flex justify-content-center" method="POST" action="{{ url_for('deleteUser') }}">
+                                                <input class="form-control me-2" name="deleteID" type="hidden" value="{{ contact_data['_id'] }}">
+                                                <button class="btn btn-outline-secondary" type="submit">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-dash" viewBox="0 0 16 16">
+                                                        <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7M11 12h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1 0-1m0-7a3 3 0 1 1-6 0 3 3 0 0 1 6 0M8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4"/>
+                                                        <path d="M8.256 14a4.5 4.5 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10q.39 0 .74.025c.226-.341.496-.65.804-.918Q8.844 9.002 8 9c-5 0-6 3-6 4s1 1 1 1z"/>
+                                                    </svg>
+                                                </button>
+                                            </form>
+                                        </th>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-footer">
+                        <form class="d-flex" method="POST" action="{{ url_for('addUser') }}">
+                            <input name="idUser" type="hidden" id="idUser" value="{{ data.idUser }}">
+                            <input class="form-control me-2" name="userSearch" type="text" placeholder="@User" id="usernameSearch">
+                            <button class="btn btn-outline-secondary" type="submit" id="sendSearch">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-add" viewBox="0 0 16 16">
+                                    <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0m-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0M8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4"/>
+                                    <path d="M8.256 14a4.5 4.5 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10q.39 0 .74.025c.226-.341.496-.65.804-.918Q8.844 9.002 8 9c-5 0-6 3-6 4s1 1 1 1z"/>
+                                </svg>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-8">
+                <div class="card text-center">
+                    <div class="card-header">
+                        <h3>Foros Grupal</h3>
+                        <h5>¡No se guardan estos mensajes!</h5>
+                    </div>
+                    <div class="card-body text-start" style="max-height: 300px; overflow-y: auto;">
+                        <ul id="messages"></ul>
+                    </div>
+                    <div class="card-footer">
+                        <!--<form class="d-flex" role="text">-->
+                        <div class="d-flex justify-content-center">
+                            <input class="form-control me-2" type="text" placeholder="Text" id="myMessage" >
+                            <button class="btn btn-outline-secondary" type="submit" id="send">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send" viewBox="0 0 16 16">
+                                    <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 
+                                    .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576zm6.787-8.201L1.591 6.602l4.339 2.76z"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <!--</form>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <!-- Socketio -->
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js" integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO" crossorigin="anonymous"></script>
+    <script>
+        const socket = io();
+        socket.on('message', function(data){
+            console.log("Mensaje recibido: " + data.message);
+            var messageItem = '<li><strong>' + data.username + ':</strong> ' + data.message + '</li>';
+            $('#messages').append(messageItem);
+        });
+        
+        $('#send').on('click', function(){
+            var message = $('#myMessage').val();
+            var username = "{{ data.username }}"; // Obtener el nombre de usuario desde la plantilla HTML
+            console.log("Mensaje enviado: " + message);
+            socket.emit('message', {username: username, message: message}); // Pasar el nombre de usuario junto con el mensaje
+            $('#myMessage').val('');
+        });
+    </script>   
+
+{% endblock %}

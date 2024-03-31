@@ -1,0 +1,80 @@
+{% extends "layouts/base_user.html" %}
+
+{% block title %}Chat con {{data.username}} {% endblock %}
+
+{% block content %}
+
+    {% if data %}
+    
+        <div class="alert alert-light mt-3 ms-5 me-5" role="alert">
+            <div class="row d-flex align-items-center">
+                <div class="col text-start">
+                    <a href="/user">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-arrow-left text-dark" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
+                        </svg>
+                    </a>
+                </div>
+                <div class="col">
+                    <h4 class="text-center">Chat de {{ data.name }} {{ data.surname }}!</h4>
+                    <h6 class="text-center">Username: {{data.username}} </h6>
+                </div>
+                <div class="col text-end">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-arrow-left text-dark" viewBox="0 0 16 16">
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+    {% endif %}
+
+    <div class="container">
+        <div class="row d-flex align-items-center">
+            <div class="card text-center">
+                <div class="card-header">
+                    <h4>{{data.username}}</h4>
+                </div>
+                <div class="card-body text-start" style="max-height: 300px; overflow-y: auto;">
+                    <ul id="messagesChat"></ul>
+                </div>
+                <div class="card-footer">
+                    <div class="d-flex justify-content-center">
+                        <input class="form-control me-2" type="text" placeholder="Text" id="myMessageChat" >
+                        <button class="btn btn-outline-secondary" type="submit" id="sendChat">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send" viewBox="0 0 16 16">
+                                <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 
+                                .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576zm6.787-8.201L1.591 6.602l4.339 2.76z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <!-- Socketio -->
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js" integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO" crossorigin="anonymous"></script>
+    <script>
+        // Definir el socket
+        const socket = io();
+    
+        // Manejar los mensajes recibidos
+        socket.on('message', function(data){
+            console.log("Mensaje recibido: " + data.message);
+            var messageItem = '<li><strong>' + data.username + ':</strong> ' + data.message + '</li>';
+            $('#messagesChat').append(messageItem);
+        });
+    
+        // Manejar el envío de mensajes
+        $('#sendChat').on('click', function(){
+            var message = $('#myMessageChat').val();
+            var recipient = '{{ data.username }}';
+            var sender = '{{ data.usernameOpen  }}';
+            console.log("Mensaje enviado: " + message);
+            socket.emit('private_message', {sender: sender, recipient: recipient, message: message});
+            $('#myMessageChat').val('');
+        });
+    </script>
+{% endblock %}
