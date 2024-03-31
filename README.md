@@ -1,6 +1,6 @@
 # SD-Flask
     Este proyecto fue desarrollado como parte del curso de "Sistemas Distribuidos"
-    con el propósito de explorar   el funcionamiento de este tipo de sistemas.
+    con el propósito de explorar el funcionamiento de este tipo de sistemas.
 
     El proyecto consiste en un sistema de mensajería en tiempo real, implementado 
     utilizando tecnologías como Python y el framework Flask para la creación del 
@@ -15,7 +15,7 @@
 ## Autor:
     Jorge Antonio Gálvez Pino
 
-## TEcnologias Utilizadas
+## Tecnologias Utilizadas
     
     Lenguaje de Programación: Python 3.11.4
     Framework: Flask
@@ -24,6 +24,13 @@
 
 ## Requisitos
 
-    Para la instalacion de las librerias mecesaria para ejecutaer el programa
-    debe ejecutar el siguiente comando
+    Para la instalación de las librerías necesarias para ejecutar el programa
+    debe ejecutar el siguiente comando:
+
         "pip install -r .\requirements.txt"
+
+## Ejecución en Local
+
+    Comando:
+
+        python main.py
