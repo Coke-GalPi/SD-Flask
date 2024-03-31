@@ -26,5 +26,4 @@
 
     Para la instalacion de las librerias mecesaria para ejecutaer el programa
     debe ejecutar el siguiente comando
-        ```bash
         "pip install -r .\requirements.txt"
