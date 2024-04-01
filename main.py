@@ -36,7 +36,6 @@ def signin():
         if user_Auth():
             session['username'] = username
             return redirect(url_for('user'))
-    # Si no se ha iniciado sesión correctamente, renderiza el formulario de inicio de sesión.
     return render_template('signin.html')
 
 # Aquí iría tu lógica de cierre de sesión
@@ -114,23 +113,17 @@ def handle_private_message(data):
     recipient = data['recipient']
     message = data['message']
     sender = data['sender']
-
-    # Ordenar los nombres de sender y recipient para que la sala sea consistente
     room_participants = sorted([sender, recipient])
     room = f"{room_participants[0]}-{room_participants[1]}"
-
     join_room(room)
     socketio.emit('message', {'username': sender, 'message': message}, room=room)
-    
-    if room in socketio.server.manager.rooms[request.sid]:
-        message_data = {
-            'sender': sender,
-            'recipient': recipient,
-            'message': message,
-            'room': room
-        }
-        saveChatRoom(message_data)
+    message_data = {
+        'sender': sender,
+        'recipient': recipient,
+        'message': message,
+        'room': room
+    }
+    saveChatRoom(message_data)
 
-    
 if __name__ == '__main__':
     socketio.run(app, debug=True)

@@ -49,7 +49,7 @@ def user_Auth():
     user_data = mongo.db.Users.find_one({'username': username})
     print (user_data)
     if user_data:
-        stored_hash = user_data.get('password', None)  # Corrected key name to match storage
+        stored_hash = user_data.get('password', None)
         if stored_hash:
             return check_password(password, stored_hash)
         else:
