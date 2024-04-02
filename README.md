@@ -16,9 +16,13 @@ volúmenes de datos de manera eficiente.
 Jorge Antonio Gálvez Pino
 
 ## Tecnologias Utilizadas
+
 Lenguaje de Programación: Python 3.11.4
+
 Framework: Flask
+
 Comunicación en Tiempo Real: SocketIO
+
 Base de Datos: MongoDB 7.0.6
 
 ## Requisitos
