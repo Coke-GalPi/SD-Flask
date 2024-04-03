@@ -5,6 +5,9 @@ from services.crudUser import *
 from services.crudContact import *
 from services.crudMessage import *
 from flask_socketio import SocketIO, send, join_room, leave_room
+from cryptography.fernet import Fernet
+import base64
+
 import os
 
 # Cargamos la variable de ambiente
@@ -21,6 +24,12 @@ socketio = SocketIO(app)
 app.config['MONGO_URI'] = os.getenv('MONGO_URI')
 mongo.init_app(app)
 
+# Generar una clave secreta
+key = Fernet.generate_key()
+# Convertir la clave a un formato seguro para enviarla al cliente
+secure_key = base64.urlsafe_b64encode(key).decode()
+# Inicializar el objeto Fernet con la clave generada
+cipher_suite = Fernet(key)
 # Definimos una ruta y una función de vista index
 @app.route('/')
 def index():
@@ -116,11 +125,16 @@ def handle_private_message(data):
     room_participants = sorted([sender, recipient])
     room = f"{room_participants[0]}-{room_participants[1]}"
     join_room(room)
+    
+    # Cifrar el mensaje antes de enviarlo
+    #encrypted_message = cipher_suite.encrypt(message.encode('utf-8')).decode('utf-8')
+    
     socketio.emit('message', {'username': sender, 'message': message}, room=room)
     message_data = {
+        'room': room,
         'sender': sender,
         'recipient': recipient,
-        'message': message,
+        'message': message,  # Guardar el mensaje cifrado en la base de datos
         'room': room
     }
     saveChatRoom(message_data)

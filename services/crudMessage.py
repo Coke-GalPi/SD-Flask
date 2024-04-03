@@ -7,3 +7,7 @@ def saveChatRoom(data):
         return mongo.db.Messages.insert_one(data) 
     else:
         return {'error': 'Invalid payload'}, 400 
+
+def getChatMessages(id):
+    data = mongo.db.Contacts.find({'room': id})
+    return data

@@ -56,24 +56,38 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <!-- Socketio -->
     <script src="https://cdn.socket.io/4.7.5/socket.io.min.js" integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO" crossorigin="anonymous"></script>
+    <!-- Crypyo -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <!-- funcion de envio y recepcion de mensaje -->
     <script>
         // Definir el socket
         const socket = io();
-    
+
+        // Clave secreta compartida entre el servidor y el cliente
+        const key = "{{ secure_key }}";
+
         // Manejar los mensajes recibidos
         socket.on('message', function(data){
             console.log("Mensaje recibido: " + data.message);
-            var messageItem = '<li><strong>' + data.username + ':</strong> ' + data.message + '</li>';
+            
+            // Descifrar el mensaje recibido
+            var decrypted_message = CryptoJS.AES.decrypt(data.message, key).toString(CryptoJS.enc.Utf8);
+            
+            var messageItem = '<li><strong>' + data.username + ':</strong> ' + decrypted_message + '</li>';
             $('#messagesChat').append(messageItem);
         });
-    
+
         // Manejar el envío de mensajes
         $('#sendChat').on('click', function(){
             var message = $('#myMessageChat').val();
             var recipient = '{{ data.username }}';
             var sender = '{{ data.usernameOpen  }}';
             console.log("Mensaje enviado: " + message);
-            socket.emit('private_message', {sender: sender, recipient: recipient, message: message});
+            
+            // Cifrar el mensaje antes de enviarlo
+            var encrypted_message = CryptoJS.AES.encrypt(message, key).toString();
+            
+            socket.emit('private_message', {sender: sender, recipient: recipient, message: encrypted_message});
             $('#myMessageChat').val('');
         });
     </script>
