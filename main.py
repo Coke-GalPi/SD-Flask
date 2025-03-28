@@ -21,7 +21,6 @@ app.config['SECRET_KEY'] = 'secret'
 socketio = SocketIO(app)
 
 # Agregamos la variable de ambiente a la app
-print(os.getenv('MONGO_URI'))
 app.config['MONGO_URI'] = os.getenv('MONGO_URI')
 mongo.init_app(app)
 

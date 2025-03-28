@@ -18,7 +18,6 @@ def create_newUser():
     surname = data.get('surname', None)
     username = data.get('username', None)
     password = data.get('password', None)
-    #print (name, surname, username, password)
     if name and username and password:
         # Encriptar la contraseña
         hashed_password = generate_password_hash(password)
@@ -47,7 +46,6 @@ def user_Auth():
     username = datos.get('username', None)
     password = datos.get('password', None)
     user_data = mongo.db.Users.find_one({'username': username})
-    print (user_data)
     if user_data:
         stored_hash = user_data.get('password', None)
         if stored_hash:
