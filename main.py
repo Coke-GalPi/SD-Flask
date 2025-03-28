@@ -21,6 +21,7 @@ app.config['SECRET_KEY'] = 'secret'
 socketio = SocketIO(app)
 
 # Agregamos la variable de ambiente a la app
+print(os.getenv('MONGO_URI'))
 app.config['MONGO_URI'] = os.getenv('MONGO_URI')
 mongo.init_app(app)
 
@@ -30,6 +31,7 @@ key = Fernet.generate_key()
 secure_key = base64.urlsafe_b64encode(key).decode()
 # Inicializar el objeto Fernet con la clave generada
 cipher_suite = Fernet(key)
+
 # Definimos una ruta y una función de vista index
 @app.route('/')
 def index():
@@ -140,4 +142,4 @@ def handle_private_message(data):
     saveChatRoom(message_data)
 
 if __name__ == '__main__':
-    socketio.run(app, debug=True)
+    socketio.run(app, debug=True, allow_unsafe_werkzeug=True)
